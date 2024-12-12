@@ -66,12 +66,16 @@ app.MapGet("/api/imc/listarPorALuno", ([FromServices] AppDataContext ctx) =>
 
 
 
-// app.MapPut("/api/imc/alterar{id}", ([FromServices] AppDataContext ctx, [FromBody] string id) =>
+// app.MapPut("/api/imc/alterar {id}", ([FromServices] AppDataContext ctx, [FromBody] string id) =>
 // {
 //     Imc? imc = ctx.Imc.Find(id);
 //     if(imc is null)
 //     {
 //         return Results.NotFound("Imc não encontrado");
+//     }
+//     if(imc.Status = "não iniciada")
+//     {
+       
 //     }
     
 // });
