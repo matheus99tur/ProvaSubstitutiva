@@ -1,6 +1,13 @@
 ### Cadastro Aluno
 POST http://localhost:5014/api/aluno/cadastrar
 
+Content-Type: application/json
+{
+    Nome: "Aluno"
+    SobreNome: "Alunoo"
+    AlunoId: 
+}
+
 
 ###Cadastrar IMC
 POST  http://localhost:5014/api/imc/cadastrar

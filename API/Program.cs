@@ -53,6 +53,18 @@ app.MapGet("/api/imc/listar", ([FromServices] AppDataContext ctx) =>
 });
 
 
+//Listar Por Aluno 
+
+app.MapGet("/api/imc/listarPorALuno", ([FromServices] AppDataContext ctx) =>
+{
+   if(ctx.Imc.Any()){
+    return Results.Ok(ctx.Imc.Include(x => x.Altura).ToList());
+    
+   }
+        return Results.NotFound("Nenhuma tarefa encontrada");
+});
+
+
 
 // app.MapPut("/api/imc/alterar{id}", ([FromServices] AppDataContext ctx, [FromBody] string id) =>
 // {
@@ -63,3 +75,6 @@ app.MapGet("/api/imc/listar", ([FromServices] AppDataContext ctx) =>
 //     }
     
 // });
+
+
+
