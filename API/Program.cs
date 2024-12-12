@@ -1,44 +1,65 @@
+using API.models;
+using API.Properties;
+using Microsoft.AspNetCore.Mvc;
+
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<AppDataContext>();
+
+// builder.Services.AddCors(
+//     options =>
+//         options.AddPolicy("Acesso Total",
+//             configs => configs
+//                 .AllowAnyOrigin()
+//                 .AllowAnyHeader()
+//                 .AllowAnyMethod())
+// );
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+
+app.MapGet("/", () => "Prova Substitutiva");
+
+
+
+
+app.MapPost("/api/aluno/cadastrar", ([FromServices] AppDataContext ctx, [FromBody] Aluno aluno) =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    ctx.Aluno.Add(aluno);
+    ctx.SaveChanges();
+    return Results.Created("", aluno);
+});
 
-app.UseHttpsRedirection();
 
-var summaries = new[]
+app.MapPost("/api/imc/cadastrar", ([FromServices] AppDataContext ctx, [FromBody] Imc imc) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    ctx.Imc.Add(imc);
+    ctx.SaveChanges();
+    return Results.Created("", imc);
+});
 
-app.MapGet("/weatherforecast", () =>
+
+
+//Listar Imc
+app.MapGet("/api/imc/listar", ([FromServices] AppDataContext ctx) =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+    if (ctx.Imc.Any())
+    {
+        return Results.Ok(ctx.Imc.ToList());
+    }
+    return Results.NotFound("Nenhum Imc Encontrado");
+});
 
-app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+
+// app.MapPut("/api/imc/alterar{id}", ([FromServices] AppDataContext ctx, [FromBody] string id) =>
+// {
+//     Imc? imc = ctx.Imc.Find(id);
+//     if(imc is null)
+//     {
+//         return Results.NotFound("Imc não encontrado");
+//     }
+    
+// });

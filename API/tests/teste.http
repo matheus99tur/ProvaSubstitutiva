@@ -1,0 +1,10 @@
+### Cadastro Aluno
+POST http://localhost:5014/api/aluno/cadastrar
+
+
+###Cadastrar IMC
+POST  http://localhost:5014/api/imc/cadastrar
+
+###Listar IMC
+
+GET http://localhost:5014/api/imc/listar
